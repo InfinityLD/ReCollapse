@@ -22,6 +22,7 @@ class FeaturesEmbedding(nn.Module, ABC):
         super(FeaturesEmbedding, self).__init__()
         self.embedding = nn.Embedding(sum(field_dims), embed_dim)
         self.offsets = np.array([0, *np.cumsum(field_dims)[:-1]], dtype=np.long)
+        nn.init.xavier_uniform_(self.embedding.weight.data)
 
     def forward(self, x):
         x = x + x.new_tensor(self.offsets)
