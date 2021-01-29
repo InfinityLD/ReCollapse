@@ -144,21 +144,21 @@ def main():
     # fm = FactorizationMachineModel(field_dims=field_dims, embed_dim=16)
     fm = DeepFMModel(field_dims=field_dims, embed_dim=16)
     summary(fm, input_shape=(15,), input_dtype=torch.long)
-    # criterion = nn.BCELoss()
-    # optimizer = torch.optim.Adam(params=fm.parameters(), lr=0.001, weight_decay=1e-6)
-    #
-    # writer = SummaryWriter('../data/tensorboard/')
-    # for e in range(args.epochs):
-    #     train(fm, dl_train, device, criterion, optimizer)
-    #     train_auc_score = test(fm, dl_train, device)
-    #     val_auc_score = test(fm, dl_val, device)
-    #     writer.add_scalars('AUC', {'Train': train_auc_score,
-    #                                'Val': val_auc_score}, e)
-    #     print(f'\nepoch {e}\t train auc: {round(train_auc_score, 4)}\tvalidation auc: {round(val_auc_score, 4)}')
-    #
-    # writer.add_graph(fm, input_to_model=torch.rand(1, 15).long())
-    # writer.flush()
-    # writer.close()
+    criterion = nn.BCELoss()
+    optimizer = torch.optim.Adam(params=fm.parameters(), lr=0.001, weight_decay=1e-6)
+
+    writer = SummaryWriter('../data/tensorboard/')
+    for e in range(args.epochs):
+        train(fm, dl_train, device, criterion, optimizer)
+        train_auc_score = test(fm, dl_train, device)
+        val_auc_score = test(fm, dl_val, device)
+        writer.add_scalars('AUC', {'Train': train_auc_score,
+                                   'Val': val_auc_score}, e)
+        print(f'\nepoch {e}\t train auc: {round(train_auc_score, 4)}\tvalidation auc: {round(val_auc_score, 4)}')
+
+    writer.add_graph(fm, input_to_model=torch.rand(1, 15).long())
+    writer.flush()
+    writer.close()
 
 
 if __name__ == "__main__":

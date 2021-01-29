@@ -17,8 +17,9 @@ class DeepFMModel(nn.Module, ABC):
     def forward(self, x):
         embedding_vectors = self.embedding(x)
         linear_logit = self.linear(x)
-        fm_logit = torch.sigmoid(self.fm(embedding_vectors).squeeze(1))
-        dnn_logit = self.dnn(embedding_vectors)
+        fm_logit = torch.sigmoid(self.fm(embedding_vectors))
+        dense_embedding_vectors = nn.Flatten()(embedding_vectors)
+        dnn_logit = self.dnn(dense_embedding_vectors)
         logit = linear_logit + fm_logit + dnn_logit
         return torch.sigmoid(logit.squeeze(1))
 
